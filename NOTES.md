@@ -6,11 +6,13 @@
   - Sentences: use terms in context
   - Definition
   - Related terms
-  - Code snippets (JSFiddle?)
+  - Code snippets (JSFiddle?) [MULTIPLE]
 - Questions: (What is AJAX used for?)
   - Main Question
   - Answer
-- Categories: (Front-end, Back-end)
+- Categories:
+  - Front-end
+  - Back-end)
 
 ## Apps
 
@@ -28,6 +30,5 @@
 - Profile pages
 - Bookmarking of terms
 
-
-##ERD
+## ERD
 - [ERD](https://www.lucidchart.com/invitations/accept/483827f4-501e-4adc-81a1-667c4e763881)
