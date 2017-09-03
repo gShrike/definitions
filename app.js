@@ -9,7 +9,7 @@ const bodyParser = require('body-parser')
 const knex = require('./db/knex')
 
 // ROUTES
-const index = require('./routes/index')
+const terms = require('./routes/terms')
 const users = require('./routes/users')
 
 
@@ -27,7 +27,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
-app.use('/', index)
+app.use('/terms', terms)
 app.use('/users', users)
 
 // catch 404 and forward to error handler
