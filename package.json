@@ -3,7 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "migrate:production": "NODE_ENV=production knex migrate:latest",
+    "seed:production": "NODE_ENV=production knex seed:run",
+    "deploy": "git push heroku master"
   },
   "dependencies": {
     "body-parser": "^1.17.2",
