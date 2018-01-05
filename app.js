@@ -12,6 +12,8 @@ const knex = require('./db/knex')
 // ROUTES
 const terms = require('./routes/terms')
 const users = require('./routes/users')
+const categories = require('./routes/categories')
+const questions = require('./routes/questions')
 
 
 const app = express()
@@ -31,6 +33,8 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 app.use('/terms', terms)
 app.use('/users', users)
+app.use('/categories', categories)
+app.use('/questions', questions)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

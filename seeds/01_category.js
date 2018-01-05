@@ -6,11 +6,11 @@ exports.seed = function(knex, Promise) {
     .then(function () {
       var category = [{
         id: 1,
-        name: 'back-end'
+        name: 'Backend'
       },
        {
         id: 2,
-        name: 'front-end'
+        name: 'Front end'
       }];
       return knex('category').insert(category);
     });

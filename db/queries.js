@@ -13,6 +13,12 @@ const postQuestion = (question) => knex('question').insert(question).returning('
 const updateQuestion = (id, question) => knex('question').where('id', id).update(question).returning('*')
 const deleteQuestion = (id) => knex('question').where('id', id).del().returning('*')
 
+const getAllCategories = () => knex('category')
+const getOneCategory = (id) => knex('category').where('id', id)
+const postCategory = (category) => knex('category').insert(category).returning('*')
+const updateCategory = (id, category) => knex('category').where('id', id).update(category).returning('*')
+const deleteCategory = (id) => knex('category').where('id', id).del().returning('*')
+
 
 module.exports = {
   getAllTerms,
@@ -25,5 +31,11 @@ module.exports = {
   getOneQuestion,
   postQuestion,
   updateQuestion,
-  deleteQuestion
+  deleteQuestion,
+
+  getAllCategories,
+  getOneCategory,
+  postCategory,
+  updateCategory,
+  deleteCategory
 }
