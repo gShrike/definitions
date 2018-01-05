@@ -2,7 +2,7 @@
 exports.up = function(knex, Promise) {
   return knex.schema.createTable('question', (table) => {
     table.increments()
-    table.text('content').notNullable()
+    table.text('title').notNullable()
     table.text('answer').notNullable()
   })
 }
