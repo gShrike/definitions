@@ -9,6 +9,13 @@
 - `knex migrate:latest`
 - `knex seed:run`
 
+# Running
+
+- `nodemon`
+- `npm start`
+
+Runs on `http://localhost:3001`
+
 
 # Deployment
 
