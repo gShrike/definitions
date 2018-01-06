@@ -18,8 +18,7 @@ router.get('/:id', (req, res, next) => {
 
 router.post('/', (req, res, next) => {
   queries.getOneCategoryByName(req.body.name).then(item => {
-    console.log(item.length)
-    if (item.length) {
+    if (item) {
       res.status(400).send({ message: `Category already exists` })
       return next()
     }
