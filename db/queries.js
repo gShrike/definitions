@@ -15,6 +15,7 @@ const deleteQuestion = (id) => knex('question').where('id', id).del().returning(
 
 const getAllCategories = () => knex('category')
 const getOneCategory = (id) => knex('category').where('id', id)
+const getOneCategoryByName = (name) => knex('category').where('name', name)
 const postCategory = (category) => knex('category').insert(category).returning('*')
 const updateCategory = (id, category) => knex('category').where('id', id).update(category).returning('*')
 const deleteCategory = (id) => knex('category').where('id', id).del().returning('*')
@@ -35,6 +36,7 @@ module.exports = {
 
   getAllCategories,
   getOneCategory,
+  getOneCategoryByName,
   postCategory,
   updateCategory,
   deleteCategory

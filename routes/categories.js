@@ -17,10 +17,18 @@ router.get('/:id', (req, res, next) => {
 })
 
 router.post('/', (req, res, next) => {
-  queries.postCategory(req.body)
-    .then(category => {
-      res.json(category)
-    })
+  queries.getOneCategoryByName(req.body.name).then(item => {
+    console.log(item.length)
+    if (item.length) {
+      res.status(400).send({ message: `Category already exists` })
+      return next()
+    }
+
+    queries.postCategory(req.body)
+      .then(category => {
+        res.json(category)
+      })
+  })
 })
 
 router.put('/:id', (req, res, next) => {
