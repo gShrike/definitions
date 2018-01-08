@@ -17,10 +17,17 @@ router.get('/:id', (req, res, next) => {
 })
 
 router.post('/', (req, res, next) => {
-  queries.postQuestion(req.body)
-    .then(question => {
-      res.json(question)
-    })
+  queries.getOneQuestionByTitle(req.body.title).then(item => {
+    if (item) {
+      res.status(400).send({ message: `Question already exists` })
+      return next()
+    }
+
+    queries.postQuestion(req.body)
+      .then(question => {
+        res.json(question)
+      })
+  })
 })
 
 router.put('/:id', (req, res, next) => {

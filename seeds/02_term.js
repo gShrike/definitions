@@ -5,14 +5,12 @@ exports.seed = function(knex, Promise) {
       var terms = [{
         id: 1,
         name: 'Abstraction',
-      },
-       {
+      },{
         id: 2,
-        name: 'Algorithm'
-      },
-      {
+        name: 'Acceptence Tests'
+      },{
         id: 3,
-        name: 'Abstraction'
+        name: 'Algorithm'
       },{
         id: 4,
         name: 'Anti-pattern'
@@ -219,9 +217,6 @@ exports.seed = function(knex, Promise) {
         name: 'Wrapper'
       },{
         id: 72,
-        name: 'Acceptence Tests'
-      },{
-        id: 73,
         name: 'Whats Up Buttholes (Kyle)'
       }];
       return knex('term').insert(terms);

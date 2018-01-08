@@ -1,6 +1,6 @@
 const knex = require('./knex')
 
-const getAllTerms = () => knex('term').orderBy('name', 'ASC')
+const getAllTerms = () => knex('term').orderByRaw('lower(name) ASC')
 const getOneTerm = (id) => knex('term').where('id', id).first()
 const postTerm = (term) => knex('term').insert(term).returning('*')
 const updateTerm = (id, term) => knex('term').where('id', id).update(term).returning('*')
@@ -9,16 +9,17 @@ const deleteTerm = (id) => knex('term').where('id', id).del().returning('*')
 
 const getAllQuestions = () => knex('question').orderBy('id', 'DESC')
 const getOneQuestion = (id) => knex('question').where('id', id).first()
+const getOneQuestionByTitle = (title) => knex('question').where('title', title).first()
 const postQuestion = (question) => knex('question').insert(question).returning('*')
 const updateQuestion = (id, question) => knex('question').where('id', id).update(question).returning('*')
 const deleteQuestion = (id) => knex('question').where('id', id).del().returning('*')
 
-const getAllCategories = () => knex('category').orderBy('name', 'ASC')
-const getOneCategory = (id) => knex('category').where('id', id).first()
-const getOneCategoryByName = (name) => knex('category').where('name', name).first()
-const postCategory = (category) => knex('category').insert(category).returning('*')
-const updateCategory = (id, category) => knex('category').where('id', id).update(category).returning('*')
-const deleteCategory = (id) => knex('category').where('id', id).del().returning('*')
+const getAllTopics = () => knex('topic').orderByRaw('lower(name) ASC')
+const getOneTopic = (id) => knex('topic').where('id', id).first()
+const getOneTopicByName = (name) => knex('topic').where('name', name).first()
+const postTopic = (topic) => knex('topic').insert(topic).returning('*')
+const updateTopic = (id, topic) => knex('topic').where('id', id).update(topic).returning('*')
+const deleteTopic = (id) => knex('topic').where('id', id).del().returning('*')
 
 
 module.exports = {
@@ -30,14 +31,15 @@ module.exports = {
 
   getAllQuestions,
   getOneQuestion,
+  getOneQuestionByTitle,
   postQuestion,
   updateQuestion,
   deleteQuestion,
 
-  getAllCategories,
-  getOneCategory,
-  getOneCategoryByName,
-  postCategory,
-  updateCategory,
-  deleteCategory
+  getAllTopics,
+  getOneTopic,
+  getOneTopicByName,
+  postTopic,
+  updateTopic,
+  deleteTopic
 }

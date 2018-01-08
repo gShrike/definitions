@@ -12,7 +12,7 @@ const knex = require('./db/knex')
 // ROUTES
 const terms = require('./routes/terms')
 const users = require('./routes/users')
-const categories = require('./routes/categories')
+const topics = require('./routes/topics')
 const questions = require('./routes/questions')
 
 
@@ -33,7 +33,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 app.use('/terms', terms)
 app.use('/users', users)
-app.use('/categories', categories)
+app.use('/topics', topics)
 app.use('/questions', questions)
 
 // catch 404 and forward to error handler
@@ -51,7 +51,10 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500)
-  res.render('error')
+  res.json({
+    error: true,
+    message: err.message
+  })
 })
 
 module.exports = app
