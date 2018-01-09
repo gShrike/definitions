@@ -3,6 +3,14 @@ const router = express.Router()
 const queries = require('../db/queries')
 
 router.get('/', (req, res, next) => {
+  if (req.query.q) {
+    queries.searchQuestions(req.query.q)
+      .then(questions => {
+        res.json(questions)
+      })
+    return
+  }
+
   queries.getAllQuestions()
     .then(questions => {
       res.json(questions)

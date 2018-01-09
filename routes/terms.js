@@ -4,6 +4,14 @@ const queries = require('../db/queries')
 
 // TERMS ROUTES
 router.get('/', (req, res, next) => {
+  if (req.query.q) {
+    queries.searchTerms(req.query.q)
+      .then(terms => {
+        res.json(terms)
+      })
+    return
+  }
+
   queries.getAllTerms()
     .then(terms => {
       res.json(terms)
