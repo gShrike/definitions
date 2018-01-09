@@ -7,7 +7,7 @@ exports.seed = function(knex, Promise) {
         name: 'Abstraction',
       },{
         id: 2,
-        name: 'Acceptence Tests'
+        name: 'Acceptance Tests'
       },{
         id: 3,
         name: 'Algorithm'

@@ -2,6 +2,7 @@ const knex = require('./knex')
 
 const getAllTerms = () => knex('term').orderByRaw('lower(name) ASC')
 const getOneTerm = (id) => knex('term').where('id', id).first()
+const getOneTermByName = (name) => knex('term').where('name', name).first()
 const postTerm = (term) => knex('term').insert(term).returning('*')
 const updateTerm = (id, term) => knex('term').where('id', id).update(term).returning('*')
 const deleteTerm = (id) => knex('term').where('id', id).del().returning('*')
@@ -25,6 +26,7 @@ const deleteTopic = (id) => knex('topic').where('id', id).del().returning('*')
 module.exports = {
   getAllTerms,
   getOneTerm,
+  getOneTermByName,
   postTerm,
   updateTerm,
   deleteTerm,

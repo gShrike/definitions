@@ -18,17 +18,31 @@ router.get('/:id', (req, res, next) => {
 })
 
 router.post('/', (req, res, next) => {
-  queries.postTerm(req.body)
-    .then(term => {
-      res.json(term)
-    })
+  queries.getOneTermByName(req.body.name).then(item => {
+    if (item) {
+      res.status(400).send({ message: `Term already exists` })
+      return next()
+    }
+
+    queries.postTerm(req.body)
+      .then(term => {
+        res.json(term)
+      })
+  })
 })
 
 router.put('/:id', (req, res, next) => {
-  queries.updateTerm(req.params.id, req.body)
-    .then(term => {
-      res.json(term)
-    })
+  queries.getOneTermByName(req.body.name).then(item => {
+    if (item) {
+      res.status(400).send({ message: `Term already exists` })
+      return next()
+    }
+
+    queries.updateTerm(req.params.id, req.body)
+      .then(term => {
+        res.json(term)
+      })
+  })
 })
 
 router.delete('/:id', (req, res, next) => {

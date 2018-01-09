@@ -31,10 +31,17 @@ router.post('/', (req, res, next) => {
 })
 
 router.put('/:id', (req, res, next) => {
-  queries.updateQuestion(req.params.id, req.body)
-    .then(question => {
-      res.json(question)
-    })
+  queries.getOneQuestionByTitle(req.body.title).then(item => {
+    if (item) {
+      res.status(400).send({ message: `Question already exists` })
+      return next()
+    }
+
+    queries.updateQuestion(req.params.id, req.body)
+      .then(question => {
+        res.json(question)
+      })
+  })
 })
 
 router.delete('/:id', (req, res, next) => {
