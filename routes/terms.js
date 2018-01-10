@@ -25,6 +25,20 @@ router.get('/:id', (req, res, next) => {
     })
 })
 
+router.get('/:id/topics', (req, res, next) => {
+  queries.getTopicsForTerm(req.params.id)
+    .then(topics => {
+      res.json(topics)
+    })
+})
+
+router.post('/:id/topics', (req, res, next) => {
+  queries.postTopicsForTerm(req.params.id, req.body)
+    .then(topics => {
+      res.json(topics)
+    })
+})
+
 router.post('/', (req, res, next) => {
   queries.getOneTermByName(req.body.name).then(item => {
     if (item) {
