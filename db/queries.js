@@ -27,7 +27,7 @@ const deleteTopic = (id) => knex('topic').where('id', id).del().returning('*')
 
 const getTopicsForTerm = (term_id) => knex('term_topic').where('term_id', term_id).then(term_topics => {
   const ids = term_topics.map(term_topic => term_topic.topic_id)
-  return knex('topic').whereIn('id', ids)
+  return knex('topic').whereIn('id', ids).orderByRaw('lower(name) ASC')
 })
 const postTopicsForTerm = (term_id, topics) => {
   return knex('term_topic').where('term_id', term_id).del().then(dels => {
@@ -35,6 +35,17 @@ const postTopicsForTerm = (term_id, topics) => {
   })
 }
 const postTopicForTerm = (term_id, topic_id) => knex('term_topic').insert({ term_id, topic_id })
+
+const getTermsForTopic = (topic_id) => knex('term_topic').where('topic_id', topic_id).then(term_topics => {
+  const ids = term_topics.map(term_topic => term_topic.term_id)
+  return knex('term').whereIn('id', ids).orderByRaw('lower(name) ASC')
+})
+const postTermsForTopic = (topic_id, terms) => {
+  return knex('term_topic').where('topic_id', topic_id).del().then(dels => {
+    return Promise.all(terms.map(term => postTermForTopic(topic_id, term.id)))
+  })
+}
+const postTermForTopic = (topic_id, term_id) => knex('term_topic').insert({ term_id, topic_id })
 
 module.exports = {
   getAllTerms,
@@ -63,5 +74,9 @@ module.exports = {
 
   getTopicsForTerm,
   postTopicsForTerm,
-  postTopicForTerm
+  postTopicForTerm,
+
+  getTermsForTopic,
+  postTermsForTopic,
+  postTermForTopic
 }
