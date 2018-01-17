@@ -25,7 +25,8 @@ router.get('/github_callback', (req, res, next) => {
     const github = querystring.parse(body)
 
     res.cookie('gToken', github.access_token)
-    res.json(github)
+    res.redirect('/auth/validate')
+    // res.json(github)
   })
 
 })
