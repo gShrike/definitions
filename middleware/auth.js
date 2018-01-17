@@ -3,10 +3,9 @@ const request = require('request')
 module.exports = {
 
   gShrikeMember: function(req, res, next) {
-    const authHeader = req.headers.authorization
-    if (authHeader) {
-      const githubAccessToken = authHeader.substring(7)
+    const githubAccessToken = res.cookie('gToken')
 
+    if (githubAccessToken) {
       request({
         url: 'https://api.github.com/user/memberships/orgs/gShrike',
         method: 'GET',
