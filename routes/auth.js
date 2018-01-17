@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const querystring = require('querystring')
 const auth = require('../middleware/auth')
+const request = require('request')
 
 router.get('/login', (req, res, next) => {
   res.redirect(`https://github.com/login/oauth/authorize?client_id=${process.env.GITHUB_CLIENT_ID}&scope=read:org`)
