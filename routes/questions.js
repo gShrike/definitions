@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const queries = require('../db/queries')
+const auth = require('../middleware/auth')
 
 router.get('/', (req, res, next) => {
   if (req.query.q) {
@@ -24,7 +25,7 @@ router.get('/:id', (req, res, next) => {
     })
 })
 
-router.post('/', (req, res, next) => {
+router.post('/', auth.gShrikeMember, (req, res, next) => {
   queries.getOneQuestionByTitle(req.body.title).then(item => {
     if (item) {
       res.status(400).send({ message: `Question already exists` })
@@ -38,7 +39,7 @@ router.post('/', (req, res, next) => {
   })
 })
 
-router.put('/:id', (req, res, next) => {
+router.put('/:id', auth.gShrikeMember, (req, res, next) => {
   queries.getOneQuestionByTitle(req.body.title).then(item => {
     if (item) {
       res.status(400).send({ message: `Question already exists` })
@@ -52,7 +53,7 @@ router.put('/:id', (req, res, next) => {
   })
 })
 
-router.delete('/:id', (req, res, next) => {
+router.delete('/:id', auth.gShrikeMember, (req, res, next) => {
   queries.deleteQuestion(req.params.id)
     .then(question => {
       res.json({message: 'Question deleted'})

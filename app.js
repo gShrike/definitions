@@ -10,6 +10,7 @@ const cors = require('cors')
 const knex = require('./db/knex')
 
 // ROUTES
+const auth = require('./routes/auth')
 const terms = require('./routes/terms')
 const users = require('./routes/users')
 const topics = require('./routes/topics')
@@ -31,6 +32,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
+app.use('/auth', auth)
 app.use('/terms', terms)
 app.use('/users', users)
 app.use('/topics', topics)

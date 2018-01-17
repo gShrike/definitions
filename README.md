@@ -9,6 +9,15 @@
 - `knex migrate:latest`
 - `knex seed:run`
 
+To support Auth, add `.env` with the keys from a Github App:
+
+```
+GITHUB_CLIENT_ID=xxx
+GITHUB_CLIENT_SECRET=xxx
+```
+
+The Github App will need `read:org` scope.
+
 # Running
 
 - `nodemon`
