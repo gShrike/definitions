@@ -6,15 +6,15 @@ const request = require('request')
 const url = require('url')
 
 const allowedDomains = [
-  'http://localhost:3000',
-  'https://galvanize-terms-ce05d.firebaseapp.com'
+  'localhost',
+  'galvanize-terms-ce05d.firebaseapp.com'
 ]
 
 router.get('/login', (req, res, next) => {
   const { redirect_url } = req.query
   const domain = url.parse(redirect_url).hostname
 
-  if (!allowedDomains.indexOf(domain)) {
+  if (allowedDomains.indexOf(domain) === -1) {
     return res.status(401).json({ error: true, message: `Domain not allowed for redirects` })
   }
 
@@ -32,7 +32,7 @@ router.get('/github_callback', (req, res, next) => {
   const redirect_url = req.cookies.gRedirect
   const domain = url.parse(redirect_url).hostname
 
-  if (!allowedDomains.indexOf(domain)) {
+  if (allowedDomains.indexOf(domain) === -1) {
     return res.status(401).json({ error: true, message: `Domain not allowed for redirects` })
   }
 
@@ -45,6 +45,7 @@ router.get('/github_callback', (req, res, next) => {
   }, (err, response, body) => {
     const github = querystring.parse(body)
     console.log(github)
+    console.log(`setting cookie: ${domain}`)
 
     // Set the cookie then redirect
     res.clearCookie('gRedirect')
