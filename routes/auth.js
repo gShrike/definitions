@@ -23,16 +23,18 @@ router.get('/github_callback', (req, res, next) => {
     }
   }, (err, response, body) => {
     const github = querystring.parse(body)
+    console.log(github)
 
+    // Set the cookie then redirect
     res.cookie('gToken', github.access_token)
-    res.redirect('/auth/validate')
-    // res.json(github)
+    res.set('Content-Type', 'text/html')
+    res.send(new Buffer(`<script>window.onload=function(){window.location.replace('/auth/validate')}</script>`))
   })
 
 })
 
 router.get('/validate', auth.gShrikeMember, (req, res, next) => {
-  res.json({ error: false, message: `Valid Github Organization member`})
+  res.json({ success: true, message: `Valid Github Organization member`})
 })
 
 module.exports = router

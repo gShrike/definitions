@@ -3,7 +3,7 @@ const request = require('request')
 module.exports = {
 
   gShrikeMember: function(req, res, next) {
-    const githubAccessToken = res.cookie('gToken')
+    const githubAccessToken = req.cookies.gToken
 
     if (githubAccessToken) {
       request({
@@ -30,7 +30,7 @@ module.exports = {
             break
         }
 
-        if (data.state !== `active`) {
+        if (response.statusCode === 200 && data.state !== `active`) {
           error.error = true
           error.message = `Not an active member of the Github Organization`
         }
@@ -43,7 +43,7 @@ module.exports = {
       })
     }
     else {
-      return res.status(401).json({ error: true, message: `Unauthorized` })
+      return res.status(401).json({ error: true, message: `Not logged in` })
     }
   }
 
