@@ -7,7 +7,8 @@ const url = require('url')
 
 const allowedDomains = [
   'localhost',
-  'galvanize-terms-ce05d.firebaseapp.com'
+  'galvanize-terms-ce05d.firebaseapp.com',
+  'terms.galvanize.network'
 ]
 
 router.get('/login', (req, res, next) => {
@@ -45,11 +46,11 @@ router.get('/github_callback', (req, res, next) => {
   }, (err, response, body) => {
     const github = querystring.parse(body)
     console.log(github)
-    console.log(`setting cookie: ${domain}`)
+    console.log(`setting cookie: .galvanize.network`)
 
     // Set the cookie then redirect
     res.clearCookie('gRedirect')
-    res.cookie('gToken', github.access_token, { domain, httpOnly: false })
+    res.cookie('gToken', github.access_token, { domain: `.galvanize.network`, httpOnly: false })
     res.set('Content-Type', 'text/html')
     res.send(new Buffer(`<script>window.onload=function(){window.location.replace('${redirect_url}')}</script>`))
   })
