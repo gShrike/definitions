@@ -3,8 +3,22 @@ const router = express.Router()
 const querystring = require('querystring')
 const auth = require('../middleware/auth')
 const request = require('request')
+const url = require('url')
+
+const allowedDomains = [
+  'http://localhost:3000',
+  'https://galvanize-terms-ce05d.firebaseapp.com'
+]
 
 router.get('/login', (req, res, next) => {
+  const { redirect_url } = req.query
+  const domain = url.parse(redirect_url).hostname
+
+  if (!allowedDomains.indexOf(domain)) {
+    return res.status(401).json({ error: true, message: `Domain not allowed for redirects` })
+  }
+
+  res.cookie('gRedirect', redirect_url)
   res.redirect(`https://github.com/login/oauth/authorize?client_id=${process.env.GITHUB_CLIENT_ID}&scope=read:org`)
 })
 
@@ -13,6 +27,13 @@ router.get('/github_callback', (req, res, next) => {
 
   if (!code) {
     return next()
+  }
+
+  const redirect_url = req.cookies.gRedirect
+  const domain = url.parse(redirect_url).hostname
+
+  if (!allowedDomains.indexOf(domain)) {
+    return res.status(401).json({ error: true, message: `Domain not allowed for redirects` })
   }
 
   request.post('https://github.com/login/oauth/access_token', {
@@ -26,9 +47,10 @@ router.get('/github_callback', (req, res, next) => {
     console.log(github)
 
     // Set the cookie then redirect
-    res.cookie('gToken', github.access_token)
+    res.clearCookie('gRedirect')
+    res.cookie('gToken', github.access_token, { domain, httpOnly: false })
     res.set('Content-Type', 'text/html')
-    res.send(new Buffer(`<script>window.onload=function(){window.location.replace('/auth/validate')}</script>`))
+    res.send(new Buffer(`<script>window.onload=function(){window.location.replace('${redirect_url}')}</script>`))
   })
 
 })
