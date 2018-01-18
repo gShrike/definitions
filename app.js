@@ -37,6 +37,9 @@ app.use('/terms', terms)
 app.use('/users', users)
 app.use('/topics', topics)
 app.use('/questions', questions)
+app.get('/', function(req, res, next) {
+  res.json({ success: true, message: `An API for developer terms, topics, and questions` })
+})
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
