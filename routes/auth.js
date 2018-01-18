@@ -13,6 +13,11 @@ const allowedDomains = [
 
 router.get('/login', (req, res, next) => {
   const { redirect_url } = req.query
+
+  if (!redirect_url) {
+    return res.status(400).json({ error: true, message: `A 'redirect_url' is required` })
+  }
+
   const domain = url.parse(redirect_url).hostname
 
   if (allowedDomains.indexOf(domain) === -1) {
@@ -31,6 +36,10 @@ router.get('/github_callback', (req, res, next) => {
   }
 
   const redirect_url = req.cookies.gRedirect
+  if (!redirect_url) {
+    return res.status(400).json({ error: true, message: `A 'redirect_url' is required` })
+  }
+  
   const domain = url.parse(redirect_url).hostname
 
   if (allowedDomains.indexOf(domain) === -1) {
