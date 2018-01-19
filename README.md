@@ -4,6 +4,82 @@
 
 [terms-api.galvanize.network](https://terms-api.galvanize.network)
 
+# API Endpoints
+
+## Authentication
+
+Authentication is only required for write actions.
+
+`POST` requests require `Authorization: Bearer github_access_token`
+
+`GET /auth/login?redirect_url=xxx`
+
+`GET /auth/validate` Requires `Authorization: Bearer github_access_token`
+
+## Terms
+
+`GET /terms`
+```
+[
+  {
+    "id": 1,
+    "name": "Abstraction"
+  },
+  ...
+]
+```
+
+`GET /terms/1`
+```
+{
+  "id": 1,
+  "name": "Abstraction"
+}
+```
+
+`GET /terms/1/topics`
+```
+[
+  {
+    "id": 13,
+    "name": "Design Patterns"
+  },
+  ...
+]
+```
+
+## Topics
+
+`GET /topics`
+```
+[
+  {
+    "id": 1,
+    "name": "AJAX"
+  },
+  ...
+]
+```
+
+`GET /topics/1`
+```
+{
+  "id": 1,
+  "name": "AJAX"
+}
+```
+
+`GET /topics/1/terms`
+```
+[
+  {
+    "id": 1,
+    "name": "Abstraction"
+  },
+  ...
+]
+```
+
 # Dev Setup
 
 - `npm install`
