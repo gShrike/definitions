@@ -7,7 +7,6 @@ const url = require('url')
 
 const allowedDomains = [
   'localhost',
-  'galvanize-terms-ce05d.firebaseapp.com',
   'terms.galvanize.network'
 ]
 
@@ -32,14 +31,14 @@ router.get('/github_callback', (req, res, next) => {
   const code = req.query.code
 
   if (!code) {
-    return next()
+    return res.status(400).json({ error: true, message: `A 'code' is required` })
   }
 
   const redirect_url = req.cookies.gRedirect
   if (!redirect_url) {
     return res.status(400).json({ error: true, message: `A 'redirect_url' is required` })
   }
-  
+
   const domain = url.parse(redirect_url).hostname
 
   if (allowedDomains.indexOf(domain) === -1) {

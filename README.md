@@ -1,6 +1,8 @@
 # Definitions API
 
-> An API for technical terms and their definitions
+> An API for developer terms, topics, and questions
+
+[terms-api.galvanize.network](https://terms-api.galvanize.network)
 
 # Dev Setup
 
@@ -28,12 +30,21 @@ Runs on `http://localhost:3001`
 
 # Deployment
 
+## Database: Heroku
+
 Setup your local `.env` file with the `DATABASE_URL` from Heroku, then run:
 
 ```
 npm run migrate:production
 npm run seed:production
-npm run deploy
 ```
 
-`deploy` is a shorthand for `git push heroku master`, so you must have the Heroku app connected locally.
+## Hosting: Now
+
+Deployed URL: [terms-api.galvanize.network](https://terms-api.galvanize.network)
+
+```
+now
+now -e DATABASE_URL=@definitions-database-url GITHUB_CLIENT_ID=@definitions-github-client GITHUB_CLIENT_SECRET=@definitions-github-secret
+now alias domain terms-api.galvanize.network
+```
