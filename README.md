@@ -12,7 +12,9 @@ Authentication is only required for write actions.
 
 `POST` requests require `Authorization: Bearer github_access_token`
 
-`GET /auth/login?redirect_url=xxx`
+`GET /auth/login`
+
+`POST /auth/token`  requires `code` in body
 
 `GET /auth/validate` Requires `Authorization: Bearer github_access_token`
 
@@ -115,12 +117,12 @@ npm run migrate:production
 npm run seed:production
 ```
 
-## Hosting: Now
+## Hosting: Heroku
 
-Deployed URL: [terms-api.galvanize.network](https://terms-api.galvanize.network)
+Deployed URL: [galvanize-definitions-api.herokuapp.com](https://galvanize-definitions-api.herokuapp.com)
 
 ```
-now
-now -e DATABASE_URL=@definitions-database-url GITHUB_CLIENT_ID=@definitions-github-client GITHUB_CLIENT_SECRET=@definitions-github-secret
-now alias domain terms-api.galvanize.network
+npm run deploy
 ```
+
+Aliased to `git push heroku master`
