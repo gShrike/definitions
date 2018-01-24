@@ -39,6 +39,20 @@ router.post('/:id/terms', auth.gShrikeMember, (req, res, next) => {
     })
 })
 
+router.get('/:id/questions', (req, res, next) => {
+  queries.getQuestionsForTopic(req.params.id)
+    .then(questions => {
+      res.json(questions)
+    })
+})
+
+router.post('/:id/questions', auth.gShrikeMember, (req, res, next) => {
+  queries.postQuestionsForTopic(req.params.id, req.body)
+    .then(questions => {
+      res.json(questions)
+    })
+})
+
 router.post('/', auth.gShrikeMember, (req, res, next) => {
   queries.getOneTopicByName(req.body.name).then(item => {
     if (item) {
