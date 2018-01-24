@@ -69,8 +69,14 @@ router.post('/', auth.gShrikeMember, (req, res, next) => {
 })
 
 router.put('/:id', auth.gShrikeMember, (req, res, next) => {
-  queries.getOneTermByName(req.body.name).then(item => {
-    if (item) {
+  const gettingByName = !!req.body.name
+
+  const query = gettingByName ?
+    queries.getOneTermByName(req.body.name)
+    : queries.getOneTerm(req.params.id)
+
+  query.then(item => {
+    if (gettingByName && item) {
       res.status(400).send({ message: `Term already exists` })
       return next()
     }
