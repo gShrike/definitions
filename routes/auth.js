@@ -29,8 +29,16 @@ router.post('/token', (req, res, next) => {
 
 })
 
-router.get('/validate', auth.gShrikeMember, (req, res, next) => {
-  res.json({ success: true, message: `Valid Github Organization member`})
+router.get('/validate', auth.githubAuth, (req, res, next) => {
+  const { github } = res.locals
+  const result = { success: true, message: `Valid Github member`}
+
+  if (github.member) {
+    result.member = true
+    result.message = github.message
+  }
+
+  res.json(result)
 })
 
 module.exports = router

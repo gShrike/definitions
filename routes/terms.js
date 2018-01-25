@@ -33,7 +33,7 @@ router.get('/:id/topics', (req, res, next) => {
     })
 })
 
-router.post('/:id/topics', auth.gShrikeMember, (req, res, next) => {
+router.post('/:id/topics', auth.githubAuth, auth.gShrikeMember, (req, res, next) => {
   queries.postTopicsForTerm(req.params.id, req.body)
     .then(topics => {
       res.json(topics)
@@ -47,14 +47,14 @@ router.get('/:id/questions', (req, res, next) => {
     })
 })
 
-router.post('/:id/questions', auth.gShrikeMember, (req, res, next) => {
+router.post('/:id/questions', auth.githubAuth, auth.gShrikeMember, (req, res, next) => {
   queries.postQuestionsForTerm(req.params.id, req.body)
     .then(questions => {
       res.json(questions)
     })
 })
 
-router.post('/', auth.gShrikeMember, (req, res, next) => {
+router.post('/', auth.githubAuth, auth.gShrikeMember, (req, res, next) => {
   queries.getOneTermByName(req.body.name).then(item => {
     if (item) {
       res.status(400).send({ message: `Term already exists` })
@@ -68,7 +68,7 @@ router.post('/', auth.gShrikeMember, (req, res, next) => {
   })
 })
 
-router.put('/:id', auth.gShrikeMember, (req, res, next) => {
+router.put('/:id', auth.githubAuth, auth.gShrikeMember, (req, res, next) => {
   const gettingByName = !!req.body.name
 
   const query = gettingByName ?
@@ -88,7 +88,7 @@ router.put('/:id', auth.gShrikeMember, (req, res, next) => {
   })
 })
 
-router.delete('/:id', auth.gShrikeMember, (req, res, next) => {
+router.delete('/:id', auth.githubAuth, auth.gShrikeMember, (req, res, next) => {
   queries.deleteTerm(req.params.id)
     .then(term => {
       res.json({message: 'Term deleted. Go Pats!'})
