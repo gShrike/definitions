@@ -10,7 +10,7 @@ const deleteTerm = (id) => knex('term').where('id', id).del().returning('*')
 
 
 const getAllQuestions = () => knex('question').orderBy('id', 'DESC')
-const searchQuestions = (term) => knex('question').where('title', 'ilike', `%${term}%`).orderByRaw('lower(name) ASC')
+const searchQuestions = (term) => knex('question').where('title', 'ilike', `%${term}%`).orderByRaw('lower(title) ASC')
 const getOneQuestion = (id) => knex('question').where('id', id).first()
 const getOneQuestionByTitle = (title) => knex('question').where('title', title).first()
 const postQuestion = (question) => knex('question').insert(question).returning('*')
