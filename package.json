@@ -6,7 +6,8 @@
     "start": "node ./bin/www",
     "migrate:production": "NODE_ENV=production knex migrate:latest",
     "seed:production": "NODE_ENV=production knex seed:run",
-    "deploy": "git push heroku master"
+    "deploy": "git push heroku master",
+    "backup": "node tasks/backup.js"
   },
   "dependencies": {
     "body-parser": "^1.17.2",

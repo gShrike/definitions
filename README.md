@@ -126,3 +126,14 @@ npm run deploy
 ```
 
 Aliased to `git push heroku master`
+
+
+# Backup
+
+A backup will save all tables from the `production` environment
+
+```
+npm run backup
+```
+
+Files output to `backups/*.json`
