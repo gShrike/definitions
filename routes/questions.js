@@ -68,6 +68,14 @@ router.post('/:id/topics', auth.githubAuth, auth.gShrikeMember, (req, res, next)
 })
 
 router.put('/:id', auth.githubAuth, auth.gShrikeMember, (req, res, next) => {
+  if (!req.body.title) {
+    queries.updateQuestion(req.params.id, req.body)
+      .then(question => {
+        res.json(question)
+      })
+    return
+  }
+
   queries.getOneQuestionByTitle(req.body.title).then(item => {
     if (item) {
       res.status(400).send({ message: `Question already exists` })
