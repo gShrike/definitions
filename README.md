@@ -2,7 +2,7 @@
 
 > An API for developer terms, topics, and questions
 
-[terms-api.galvanize.network](https://terms-api.galvanize.network)
+[galvanize-definitions-api.herokuapp.com](https://galvanize-definitions-api.herokuapp.com)
 
 # API Endpoints
 
@@ -77,6 +77,51 @@ Authentication is only required for write actions.
   {
     "id": 1,
     "name": "Abstraction"
+  },
+  ...
+]
+```
+
+## Questions
+
+`GET /questions`
+```
+[
+  {
+    "id": 1,
+    "title": "What is the difference between Git and Github?",
+    "answer": "Git is a Source Control system while Github is a hosting platform for Git repositories. Github has features like Forks, Pull Requests, and Issues."
+  },
+  ...
+]
+```
+
+`GET /questions/1`
+```
+{
+  "id": 1,
+  "title": "What is the difference between Git and Github?",
+  "answer": "Git is a Source Control system while Github is a hosting platform for Git repositories. Github has features like Forks, Pull Requests, and Issues."
+}
+```
+
+`GET /questions/1/terms`
+```
+[
+  {
+    "id": 10,
+    "name": "Github"
+  },
+  ...
+]
+```
+
+`GET /questions/1/topics`
+```
+[
+  {
+    "id": 10,
+    "name": "Git & Github"
   },
   ...
 ]
