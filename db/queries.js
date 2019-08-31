@@ -1,11 +1,13 @@
 const knex = require('./knex')
 
+const updateTimestamp = (table, item_id, relation) => knex(table).where('id', item_id).update(relation + '_updated_at', knex.fn.now()).returning('*')
+
 const getAllTerms = () => knex('term').orderByRaw('lower(name) ASC')
 const searchTerms = (term) => knex('term').where('name', 'ilike', `%${term}%`).orderByRaw('lower(name) ASC')
 const getOneTerm = (id) => knex('term').where('id', id).first()
 const getOneTermByName = (name) => knex('term').where('name', name).first()
 const postTerm = (term) => knex('term').insert(term).returning('*')
-const updateTerm = (id, term) => knex('term').where('id', id).update(term).returning('*')
+const updateTerm = (id, term) => knex('term').where('id', id).update(term).update('updated_at', knex.fn.now()).returning('*')
 const deleteTerm = (id) => knex('term').where('id', id).del().returning('*')
 
 
@@ -14,7 +16,7 @@ const searchQuestions = (term) => knex('question').where('title', 'ilike', `%${t
 const getOneQuestion = (id) => knex('question').where('id', id).first()
 const getOneQuestionByTitle = (title) => knex('question').where('title', title).first()
 const postQuestion = (question) => knex('question').insert(question).returning('*')
-const updateQuestion = (id, question) => knex('question').where('id', id).update(question).returning('*')
+const updateQuestion = (id, question) => knex('question').where('id', id).update(question).update('updated_at', knex.fn.now()).returning('*')
 const deleteQuestion = (id) => knex('question').where('id', id).del().returning('*')
 
 const getAllTopics = () => knex('topic').orderByRaw('lower(name) ASC')
@@ -22,7 +24,7 @@ const searchTopics = (term) => knex('topic').where('name', 'ilike', `%${term}%`)
 const getOneTopic = (id) => knex('topic').where('id', id).first()
 const getOneTopicByName = (name) => knex('topic').where('name', name).first()
 const postTopic = (topic) => knex('topic').insert(topic).returning('*')
-const updateTopic = (id, topic) => knex('topic').where('id', id).update(topic).returning('*')
+const updateTopic = (id, topic) => knex('topic').where('id', id).update(topic).update('updated_at', knex.fn.now()).returning('*')
 const deleteTopic = (id) => knex('topic').where('id', id).del().returning('*')
 
 /** Term relations **/
@@ -33,7 +35,7 @@ const getTopicsForTerm = (term_id) => knex('term_topic').where('term_id', term_i
 })
 const postTopicsForTerm = (term_id, topics) => {
   return knex('term_topic').where('term_id', term_id).del().then(dels => {
-    return Promise.all(topics.map(topic => postTopicForTerm(term_id, topic.id)))
+    return Promise.all(topics.map(topic => postTopicForTerm(term_id, topic.id))).then(results => updateTimestamp('term', term_id, 'topic').then(x => results))
   })
 }
 const postTopicForTerm = (term_id, topic_id) => knex('term_topic').insert({ term_id, topic_id })
@@ -44,7 +46,7 @@ const getQuestionsForTerm = (term_id) => knex('question_term').where('term_id', 
 })
 const postQuestionsForTerm = (term_id, questions) => {
   return knex('question_term').where('term_id', term_id).del().then(dels => {
-    return Promise.all(questions.map(question => postQuestionForTerm(term_id, question.id)))
+    return Promise.all(questions.map(question => postQuestionForTerm(term_id, question.id))).then(results => updateTimestamp('term', term_id, 'question').then(x => results))
   })
 }
 const postQuestionForTerm = (term_id, question_id) => knex('question_term').insert({ term_id, question_id })
@@ -57,7 +59,7 @@ const getTermsForTopic = (topic_id) => knex('term_topic').where('topic_id', topi
 })
 const postTermsForTopic = (topic_id, terms) => {
   return knex('term_topic').where('topic_id', topic_id).del().then(dels => {
-    return Promise.all(terms.map(term => postTermForTopic(topic_id, term.id)))
+    return Promise.all(terms.map(term => postTermForTopic(topic_id, term.id))).then(results => updateTimestamp('topic', topic_id, 'term').then(x => results))
   })
 }
 const postTermForTopic = (topic_id, term_id) => knex('term_topic').insert({ term_id, topic_id })
@@ -68,7 +70,7 @@ const getQuestionsForTopic = (topic_id) => knex('question_topic').where('topic_i
 })
 const postQuestionsForTopic = (topic_id, questions) => {
   return knex('question_topic').where('topic_id', topic_id).del().then(dels => {
-    return Promise.all(questions.map(question => postQuestionForTopic(topic_id, question.id)))
+    return Promise.all(questions.map(question => postQuestionForTopic(topic_id, question.id))).then(results => updateTimestamp('topic', topic_id, 'question').then(x => results))
   })
 }
 const postQuestionForTopic = (topic_id, question_id) => knex('question_topic').insert({ topic_id, question_id })
@@ -81,7 +83,7 @@ const getTopicsForQuestion = (question_id) => knex('question_topic').where('ques
 })
 const postTopicsForQuestion = (question_id, topics) => {
   return knex('question_topic').where('question_id', question_id).del().then(dels => {
-    return Promise.all(topics.map(topic => postTopicForQuestion(question_id, topic.id)))
+    return Promise.all(topics.map(topic => postTopicForQuestion(question_id, topic.id))).then(results => updateTimestamp('question', question_id, 'topic').then(x => results))
   })
 }
 const postTopicForQuestion = (question_id, topic_id) => knex('question_topic').insert({ question_id, topic_id })
@@ -92,7 +94,7 @@ const getTermsForQuestion = (question_id) => knex('question_term').where('questi
 })
 const postTermsForQuestion = (question_id, terms) => {
   return knex('question_term').where('question_id', question_id).del().then(dels => {
-    return Promise.all(terms.map(term => postTermForQuestion(question_id, term.id)))
+    return Promise.all(terms.map(term => postTermForQuestion(question_id, term.id))).then(results => updateTimestamp('question', question_id, 'term').then(x => results))
   })
 }
 const postTermForQuestion = (question_id, term_id) => knex('question_term').insert({ question_id, term_id })
