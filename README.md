@@ -2,7 +2,7 @@
 
 > An API for developer terms, topics, and questions
 
-[galvanize-definitions-api.herokuapp.com](https://galvanize-definitions-api.herokuapp.com)
+[dev-terms-api.herokuapp.com](https://dev-terms-api.herokuapp.com)
 
 # API Endpoints
 
@@ -164,7 +164,7 @@ npm run seed:production
 
 ## Hosting: Heroku
 
-Deployed URL: [galvanize-definitions-api.herokuapp.com](https://galvanize-definitions-api.herokuapp.com)
+Deployed URL: [dev-terms-api.herokuapp.com](https://dev-terms-api.herokuapp.com)
 
 ```
 npm run deploy

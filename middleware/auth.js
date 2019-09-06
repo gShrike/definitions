@@ -13,7 +13,7 @@ module.exports = {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${githubAccessToken}`,
-          'User-Agent': `Galvanize Definitions API`
+          'User-Agent': `Definitions API`
         }
       }, (err, response, body) => {
         const output = { error: false, member: false, message: null }
