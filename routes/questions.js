@@ -1,38 +1,43 @@
 const express = require('express')
-const router = express.Router()
+const router = express.Router({ mergeParams: true })
 const queries = require('../db/queries')
 const auth = require('../middleware/auth')
 
 router.get('/', (req, res, next) => {
   if (req.query.q) {
-    queries.searchQuestions(req.query.q)
+    queries.searchQuestions(req.params.book_id, req.query.q)
       .then(questions => {
         res.json(questions)
       })
     return
   }
 
-  queries.getAllQuestions()
+  queries.getAllQuestions(req.params.book_id)
     .then(questions => {
       res.json(questions)
     })
 })
 
 router.get('/:id', (req, res, next) => {
-  queries.getOneQuestion(req.params.id)
+  queries.getOneQuestion(req.params.book_id, req.params.id)
     .then(question => {
+      if (!question) {
+        res.status(404).send({ message: `Question not found` })
+        return
+      }
+
       res.json(question)
     })
 })
 
 router.post('/', auth.githubAuth, auth.gShrikeMember, (req, res, next) => {
-  queries.getOneQuestionByTitle(req.body.title).then(item => {
+  queries.getOneQuestionByTitle(req.params.book_id, req.body.title).then(item => {
     if (item) {
       res.status(400).send({ message: `Question already exists` })
       return next()
     }
 
-    queries.postQuestion(req.body)
+    queries.postQuestion({ ...req.body, book_id: req.params.book_id })
       .then(question => {
         res.json(question)
       })
@@ -69,20 +74,17 @@ router.post('/:id/topics', auth.githubAuth, auth.gShrikeMember, (req, res, next)
 
 router.put('/:id', auth.githubAuth, auth.gShrikeMember, (req, res, next) => {
   if (!req.body.title) {
-    queries.updateQuestion(req.params.id, req.body)
-      .then(question => {
-        res.json(question)
-      })
+    res.status(400).send({ message: `Question missing title` })
     return
   }
 
-  queries.getOneQuestionByTitle(req.body.title).then(item => {
+  queries.getOneQuestionByTitle(req.params.book_id, req.body.title).then(item => {
     if (item) {
       res.status(400).send({ message: `Question already exists` })
       return next()
     }
 
-    queries.updateQuestion(req.params.id, req.body)
+    queries.updateQuestion(req.params.book_id, req.params.id, req.body)
       .then(question => {
         res.json(question)
       })

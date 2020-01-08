@@ -164,13 +164,16 @@ npm run seed:production
 
 ## Hosting: Heroku
 
-Deployed URL: [dev-terms-api.herokuapp.com](https://dev-terms-api.herokuapp.com)
+Deployed URLs:
+- [dev-terms-api.herokuapp.com](https://dev-terms-api.herokuapp.com)
+- [music-terms-api.herokuapp.com](https://music-terms-api.herokuapp.com)
 
 ```
-npm run deploy
+npm run deploy:dev-terms
+npm run deploy:music-terms
 ```
 
-Aliased to `git push heroku master`
+Aliased to heroku remotes (e.g. `git push heroku master`)
 
 
 # Backup

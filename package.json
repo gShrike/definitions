@@ -6,7 +6,8 @@
     "start": "node ./bin/www",
     "migrate:production": "NODE_ENV=production knex migrate:latest",
     "seed:production": "NODE_ENV=production knex seed:run",
-    "deploy": "git push heroku master",
+    "deploy:dev-terms": "git push heroku-dev-terms master",
+    "deploy:music-terms": "git push heroku-music-terms master",
     "backup": "node tasks/backup.js"
   },
   "dependencies": {

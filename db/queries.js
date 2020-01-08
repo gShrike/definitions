@@ -2,30 +2,38 @@ const knex = require('./knex')
 
 const updateTimestamp = (table, item_id, relation) => knex(table).where('id', item_id).update(relation + '_updated_at', knex.fn.now()).returning('*')
 
-const getAllTerms = () => knex('term').orderByRaw('lower(name) ASC')
-const searchTerms = (term) => knex('term').where('name', 'ilike', `%${term}%`).orderByRaw('lower(name) ASC')
-const getOneTerm = (id) => knex('term').where('id', id).first()
-const getOneTermByName = (name) => knex('term').where('name', name).first()
+const getAll = (table, sortBy = 'name') => knex(table).orderByRaw(`lower(${sortBy}) ASC`)
+const searchByName = (table, name) => knex(table).where('name', 'ilike', `%${name}%`).orderByRaw('lower(name) ASC')
+const getOne = (table, id) => knex(table).where('id', id).first()
+const getOneByName = (table, name) => knex(table).where('name', name).first()
+const post = (table, body) => knex(table).insert(body).returning('*')
+const update = (table, id, body) => knex(table).where('id', id).update(body).update('updated_at', knex.fn.now()).returning('*')
+const remove = (table, id) => knex(table).where('id', id).del().returning('*')
+
+const getAllTerms = (book_id) => knex('term').where('book_id', book_id).orderByRaw('lower(name) ASC')
+const searchTerms = (book_id, term) => knex('term').where('book_id', book_id).where('name', 'ilike', `%${term}%`).orderByRaw('lower(name) ASC')
+const getOneTerm = (book_id, id) => knex('term').where('book_id', book_id).where('id', id).first()
+const getOneTermByName = (book_id, name) => knex('term').where('book_id', book_id).where('name', name).first()
 const postTerm = (term) => knex('term').insert(term).returning('*')
-const updateTerm = (id, term) => knex('term').where('id', id).update(term).update('updated_at', knex.fn.now()).returning('*')
-const deleteTerm = (id) => knex('term').where('id', id).del().returning('*')
+const updateTerm = (book_id, id, term) => knex('term').where('book_id', book_id).where('id', id).update(term).update('updated_at', knex.fn.now()).returning('*')
+const deleteTerm = (book_id, id) => knex('term').where('book_id', book_id).where('id', id).del().returning('*')
 
 
-const getAllQuestions = () => knex('question').orderBy('id', 'DESC')
-const searchQuestions = (term) => knex('question').where('title', 'ilike', `%${term}%`).orderByRaw('lower(title) ASC')
-const getOneQuestion = (id) => knex('question').where('id', id).first()
-const getOneQuestionByTitle = (title) => knex('question').where('title', title).first()
+const getAllQuestions = (book_id) => knex('question').where('book_id', book_id).orderBy('id', 'DESC')
+const searchQuestions = (book_id, term) => knex('question').where('book_id', book_id).where('title', 'ilike', `%${term}%`).orderByRaw('lower(title) ASC')
+const getOneQuestion = (book_id, id) => knex('question').where('book_id', book_id).where('id', id).first()
+const getOneQuestionByTitle = (book_id, title) => knex('question').where('book_id', book_id).where('title', title).first()
 const postQuestion = (question) => knex('question').insert(question).returning('*')
-const updateQuestion = (id, question) => knex('question').where('id', id).update(question).update('updated_at', knex.fn.now()).returning('*')
-const deleteQuestion = (id) => knex('question').where('id', id).del().returning('*')
+const updateQuestion = (book_id, id, question) => knex('question').where('book_id', book_id).where('id', id).update(question).update('updated_at', knex.fn.now()).returning('*')
+const deleteQuestion = (book_id, id) => knex('question').where('book_id', book_id).where('id', id).del().returning('*')
 
-const getAllTopics = () => knex('topic').orderByRaw('lower(name) ASC')
-const searchTopics = (term) => knex('topic').where('name', 'ilike', `%${term}%`).orderByRaw('lower(name) ASC')
-const getOneTopic = (id) => knex('topic').where('id', id).first()
-const getOneTopicByName = (name) => knex('topic').where('name', name).first()
+const getAllTopics = (book_id) => knex('topic').where('book_id', book_id).orderByRaw('lower(name) ASC')
+const searchTopics = (book_id, term) => knex('topic').where('book_id', book_id).where('name', 'ilike', `%${term}%`).orderByRaw('lower(name) ASC')
+const getOneTopic = (book_id, id) => knex('topic').where('book_id', book_id).where('id', id).first()
+const getOneTopicByName = (book_id, name) => knex('topic').where('book_id', book_id).where('name', name).first()
 const postTopic = (topic) => knex('topic').insert(topic).returning('*')
-const updateTopic = (id, topic) => knex('topic').where('id', id).update(topic).update('updated_at', knex.fn.now()).returning('*')
-const deleteTopic = (id) => knex('topic').where('id', id).del().returning('*')
+const updateTopic = (book_id, id, topic) => knex('topic').where('book_id', book_id).where('id', id).update(topic).update('updated_at', knex.fn.now()).returning('*')
+const deleteTopic = (book_id, id) => knex('topic').where('book_id', book_id).where('id', id).del().returning('*')
 
 /** Term relations **/
 
@@ -100,6 +108,14 @@ const postTermsForQuestion = (question_id, terms) => {
 const postTermForQuestion = (question_id, term_id) => knex('question_term').insert({ question_id, term_id })
 
 module.exports = {
+  getAll,
+  searchByName,
+  getOne,
+  getOneByName,
+  post,
+  update,
+  remove,
+
   getAllTerms,
   searchTerms,
   getOneTerm,

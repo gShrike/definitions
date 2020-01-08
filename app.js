@@ -11,9 +11,7 @@ const knex = require('./db/knex')
 
 // ROUTES
 const auth = require('./routes/auth')
-const terms = require('./routes/terms')
-const topics = require('./routes/topics')
-const questions = require('./routes/questions')
+const books = require('./routes/books')
 
 
 const app = express()
@@ -32,9 +30,7 @@ app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
 app.use('/auth', auth)
-app.use('/terms', terms)
-app.use('/topics', topics)
-app.use('/questions', questions)
+app.use('/books', books)
 app.get('/', function(req, res, next) {
   res.json({ success: true, message: `An API for developer terms, topics, and questions` })
 })

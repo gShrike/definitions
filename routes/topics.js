@@ -1,26 +1,31 @@
 const express = require('express')
-const router = express.Router()
+const router = express.Router({ mergeParams: true })
 const queries = require('../db/queries')
 const auth = require('../middleware/auth')
 
 router.get('/', (req, res, next) => {
   if (req.query.q) {
-    queries.searchTopics(req.query.q)
+    queries.searchTopics(req.params.book_id, req.query.q)
       .then(topics => {
         res.json(topics)
       })
     return
   }
 
-  queries.getAllTopics()
+  queries.getAllTopics(req.params.book_id)
     .then(topics => {
       res.json(topics)
     })
 })
 
 router.get('/:id', (req, res, next) => {
-  queries.getOneTopic(req.params.id)
+  queries.getOneTopic(req.params.book_id, req.params.id)
     .then(topic => {
+      if (!topic) {
+        res.status(404).send({ message: `Topic not found` })
+        return
+      }
+      
       res.json(topic)
     })
 })
@@ -54,13 +59,13 @@ router.post('/:id/questions', auth.githubAuth, auth.gShrikeMember, (req, res, ne
 })
 
 router.post('/', auth.githubAuth, auth.gShrikeMember, (req, res, next) => {
-  queries.getOneTopicByName(req.body.name).then(item => {
+  queries.getOneTopicByName(req.params.book_id, req.body.name).then(item => {
     if (item) {
       res.status(400).send({ message: `Topic already exists` })
       return next()
     }
 
-    queries.postTopic(req.body)
+    queries.postTopic({ ...req.body, book_id: req.params.book_id })
       .then(topic => {
         res.json(topic)
       })
@@ -68,13 +73,13 @@ router.post('/', auth.githubAuth, auth.gShrikeMember, (req, res, next) => {
 })
 
 router.put('/:id', auth.githubAuth, auth.gShrikeMember, (req, res, next) => {
-  queries.getOneTopicByName(req.body.name).then(item => {
+  queries.getOneTopicByName(req.params.book_id, req.body.name).then(item => {
     if (item) {
       res.status(400).send({ message: `Topic already exists` })
       return next()
     }
 
-    queries.updateTopic(req.params.id, req.body)
+    queries.updateTopic(req.params.book_id, req.params.id, req.body)
       .then(topic => {
         res.json(topic)
       })
