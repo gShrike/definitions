@@ -30,7 +30,7 @@ router.get('/:id', (req, res, next) => {
     })
 })
 
-router.post('/', auth.githubAuth, auth.gShrikeMember, (req, res, next) => {
+router.post('/', auth.githubAuth, (req, res, next) => {
   queries.getOneQuestionByTitle(req.params.book_id, req.body.title).then(item => {
     if (item) {
       res.status(400).send({ message: `Question already exists` })
@@ -51,7 +51,7 @@ router.get('/:id/terms', (req, res, next) => {
     })
 })
 
-router.post('/:id/terms', auth.githubAuth, auth.gShrikeMember, (req, res, next) => {
+router.post('/:id/terms', auth.githubAuth, (req, res, next) => {
   queries.postTermsForQuestion(req.params.id, req.body)
     .then(terms => {
       res.json(terms)
@@ -65,14 +65,14 @@ router.get('/:id/topics', (req, res, next) => {
     })
 })
 
-router.post('/:id/topics', auth.githubAuth, auth.gShrikeMember, (req, res, next) => {
+router.post('/:id/topics', auth.githubAuth, (req, res, next) => {
   queries.postTopicsForQuestion(req.params.id, req.body)
     .then(topics => {
       res.json(topics)
     })
 })
 
-router.put('/:id', auth.githubAuth, auth.gShrikeMember, (req, res, next) => {
+router.put('/:id', auth.githubAuth, (req, res, next) => {
   if (!req.body.title) {
     res.status(400).send({ message: `Question missing title` })
     return
@@ -91,7 +91,7 @@ router.put('/:id', auth.githubAuth, auth.gShrikeMember, (req, res, next) => {
   })
 })
 
-router.delete('/:id', auth.githubAuth, auth.gShrikeMember, (req, res, next) => {
+router.delete('/:id', auth.githubAuth, (req, res, next) => {
   queries.deleteQuestion(req.params.id)
     .then(question => {
       res.json({message: 'Question deleted'})
