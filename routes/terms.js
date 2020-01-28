@@ -94,7 +94,7 @@ router.put('/:id', auth.githubAuth, (req, res, next) => {
 })
 
 router.delete('/:id', auth.githubAuth, (req, res, next) => {
-  queries.deleteTerm(req.params.id)
+  queries.deleteTerm(req.params.book_id, req.params.id)
     .then(term => {
       res.json({message: 'Term deleted. Go Pats!'})
     })
