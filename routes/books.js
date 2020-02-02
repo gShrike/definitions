@@ -38,9 +38,16 @@ router.get('/:book_id', auth.bookAccess, (req, res, next) => {
     queries.getAllTopics(book.id),
     queries.getAllQuestions(book.id),
   ]).then(([terms, topics, questions]) => {
-    res.json({
-      ...book,
-      terms, topics, questions
+    Promise.all([
+      queries.getAllTermTopic(terms.map(t => t.id), topics.map(t => t.id)),
+      queries.getAllQuestionTerm(questions.map(q => q.id), terms.map(t => t.id)),
+      queries.getAllQuestionTopic(questions.map(q => q.id), topics.map(t => t.id)),
+    ]).then(([term_topic, question_term, question_topic]) => {
+      res.json({
+        ...book,
+        terms, topics, questions,
+        term_topic, question_term, question_topic
+      })
     })
   })
 })

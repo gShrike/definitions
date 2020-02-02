@@ -4,10 +4,11 @@ const config = require('../knexfile.js')[environment]
 const db = require('knex')(config)
 const fs = require('fs')
 
-dumpDatabaseTo(`backups/terms-dump-${Date.now()}.json`)
+dumpDatabaseTo(`backups/studybook-dump-${Date.now()}.json`)
 
 function dumpDatabaseTo(path) {
   return Promise.all([
+    db('book'),
     db('term'),
     db('term_topic'),
     db('topic'),
@@ -15,6 +16,7 @@ function dumpDatabaseTo(path) {
     db('question_term'),
     db('question_topic'),
   ]).then(([
+    book,
     term,
     term_topic,
     topic,
@@ -23,6 +25,7 @@ function dumpDatabaseTo(path) {
     question_topic
   ]) => {
     const results = {
+      book,
       term,
       term_topic,
       topic,

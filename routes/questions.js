@@ -73,13 +73,14 @@ router.post('/:id/topics', auth.githubAuth, (req, res, next) => {
 })
 
 router.put('/:id', auth.githubAuth, (req, res, next) => {
-  if (!req.body.title) {
-    res.status(400).send({ message: `Question missing title` })
-    return
-  }
+  const updatingTitle = !!req.body.title
 
-  queries.getOneQuestionByTitle(req.params.book_id, req.body.title).then(item => {
-    if (item) {
+  const query = updatingTitle ?
+    queries.getOneQuestionByTitle(req.params.book_id, req.body.title)
+    : queries.getOneQuestion(req.params.book_id, req.params.id)
+
+  query.then(item => {
+    if (updatingTitle && item) {
       res.status(400).send({ message: `Question already exists` })
       return next()
     }

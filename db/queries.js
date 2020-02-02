@@ -37,6 +37,7 @@ const deleteTopic = (book_id, id) => knex('topic').where('book_id', book_id).whe
 
 /** Term relations **/
 
+const getAllTermTopic = (term_ids = [], topic_ids = []) => knex('term_topic').whereIn('term_id', term_ids).orWhereIn('topic_id', topic_ids)
 const getTopicsForTerm = (term_id) => knex('term_topic').where('term_id', term_id).then(term_topics => {
   const ids = term_topics.map(term_topic => term_topic.topic_id)
   return knex('topic').whereIn('id', ids).orderByRaw('lower(name) ASC')
@@ -85,6 +86,7 @@ const postQuestionForTopic = (topic_id, question_id) => knex('question_topic').i
 
 /** Question relations **/
 
+const getAllQuestionTopic = (question_ids = [], topic_ids = []) => knex('question_topic').whereIn('question_id', question_ids).orWhereIn('topic_id', topic_ids)
 const getTopicsForQuestion = (question_id) => knex('question_topic').where('question_id', question_id).then(question_topics => {
   const ids = question_topics.map(question_topic => question_topic.topic_id)
   return knex('topic').whereIn('id', ids).orderByRaw('lower(name) ASC')
@@ -96,6 +98,7 @@ const postTopicsForQuestion = (question_id, topics) => {
 }
 const postTopicForQuestion = (question_id, topic_id) => knex('question_topic').insert({ question_id, topic_id })
 
+const getAllQuestionTerm = (question_ids = [], term_ids = []) => knex('question_term').whereIn('question_id', question_ids).orWhereIn('term_id', term_ids)
 const getTermsForQuestion = (question_id) => knex('question_term').where('question_id', question_id).then(question_terms => {
   const ids = question_terms.map(question_term => question_term.term_id)
   return knex('term').whereIn('id', ids).orderByRaw('lower(name) ASC')
@@ -140,6 +143,7 @@ module.exports = {
   updateTopic,
   deleteTopic,
 
+  getAllTermTopic,
   getTopicsForTerm,
   postTopicsForTerm,
   postTopicForTerm,
@@ -156,10 +160,12 @@ module.exports = {
   postQuestionsForTopic,
   postQuestionForTopic,
 
+  getAllQuestionTopic,
   getTopicsForQuestion,
   postTopicsForQuestion,
   postTopicForQuestion,
 
+  getAllQuestionTerm,
   getTermsForQuestion,
   postTermsForQuestion,
   postTermForQuestion
