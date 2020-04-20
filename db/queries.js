@@ -10,6 +10,21 @@ const post = (table, body) => knex(table).insert(body).returning('*')
 const update = (table, id, body) => knex(table).where('id', id).update(body).update('updated_at', knex.fn.now()).returning('*')
 const remove = (table, id) => knex(table).where('id', id).del().returning('*')
 
+const getAllBooks = (sortBy = 'name') => knex('book').orderByRaw(`lower(book.${sortBy}) ASC`).then(books => {
+  return Promise.all(books.map(book => {
+    return Promise.all([
+      knex('term').where('book_id', book.id).count('*').first(),
+      knex('topic').where('book_id', book.id).count('*').first(),
+      knex('question').where('book_id', book.id).count('*').first(),
+    ]).then(([terms, topics, questions]) => ({
+      ...book,
+      termsCount: +terms.count,
+      topicsCount: +topics.count,
+      questionsCount: +questions.count
+    }))
+  }))
+})
+
 const getAllTerms = (book_id) => knex('term').where('book_id', book_id).orderByRaw('lower(name) ASC')
 const searchTerms = (book_id, term) => knex('term').where('book_id', book_id).where('name', 'ilike', `%${term}%`).orderByRaw('lower(name) ASC')
 const getOneTerm = (book_id, id) => knex('term').where('book_id', book_id).where('id', id).first()
@@ -118,6 +133,8 @@ module.exports = {
   post,
   update,
   remove,
+
+  getAllBooks,
 
   getAllTerms,
   searchTerms,

@@ -22,7 +22,7 @@ router.get('/', (req, res, next) => {
       return
     }
   
-    queries.getAll(dbTable)
+    queries.getAllBooks()
       .then(results => {
         res.json(cullBooks(results, res.locals.github))
       })
